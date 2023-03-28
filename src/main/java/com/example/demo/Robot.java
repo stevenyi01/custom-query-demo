@@ -13,7 +13,7 @@ public class Robot {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   @Column(name = "robot_name")
-  private String robotId;
+  private String robotName;
 
   public Long getId() {
     return id;
@@ -23,12 +23,17 @@ public class Robot {
     this.id = id;
   }
 
-  public String getRobotId() {
-    return robotId;
+  public String getRobotName() {
+    return robotName;
   }
 
-  public void setRobotId(String robotId) {
-    this.robotId = robotId;
+  public void setRobotName(String robotName) {
+    this.robotName = robotName;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Robot id: %d, name %s", id, robotName);
   }
 
 }

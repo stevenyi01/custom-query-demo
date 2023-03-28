@@ -17,6 +17,7 @@ class DemoApplicationTests {
 
 	@AfterEach
 	void cleanup() {
+		System.out.println(robotRepository.findAll());
 		robotRepository.deleteAll();
 		robotMemberRepository.deleteAll();
 	}
@@ -25,16 +26,20 @@ class DemoApplicationTests {
 	void contextLoads() {
 
 		int a = 2;
+		final String robotName = "abcd";
 
-
-		Robot result = robotRepository.save(new Robot());
+		Robot newRobot = new Robot();
+		newRobot.setRobotName(robotName);
+		Robot result = robotRepository.save(newRobot);
 
 		RobotPool members = new RobotPool();
 		members.setMembers(Set.of(result));
 
 		RobotPool membersResult = robotMemberRepository.save(members);
 
-		robotMemberRepository.findRobotMembersForRobot(result);
+		Robot queryBot = new Robot();
+		queryBot.setRobotName(robotName);
+		robotMemberRepository.findRobotMembersForRobot(robotName);
 		int b = 2;
 
 		int c = 3;

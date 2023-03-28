@@ -15,23 +15,32 @@ public class CustomQueryRepositoryImpl implements CustomQueryRepository{
 
 
   @Override
-  public List<RobotPool> findRobotMembersForRobot(Robot robot) {
+  public List<RobotPool> findRobotMembersForRobot(String robotName) {
+    List<Robot> robotQueryResult = getRobotWithName(robotName);
+    if (robotQueryResult.size() != 1) {
+      // do some error handling i guess
+    }
+    Robot robot = robotQueryResult.get(0);
+
     CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
     CriteriaQuery<RobotPool> criteriaQuery = criteriaBuilder.createQuery(RobotPool.class);
     Root<RobotPool> root = criteriaQuery.from(RobotPool.class);
 
     Expression<Boolean> isMemberClause = criteriaBuilder.isMember(robot, root.get("members"));
-
     criteriaQuery.select(root).where(isMemberClause);
 
-//    select generatedAlias0 from RobotPool as generatedAlias0 where generatedAlias0.members in (:param0)
-
-//    In<Robot> inClause = criteriaBuilder.in(robot);
-//    inClause.value(root.get("members"));
-//
-//    criteriaQuery.select(root);
-//    criteriaQuery.where(inClause);
-//
     return em.createQuery(criteriaQuery).getResultList();
+  }
+
+  private List<Robot> getRobotWithName(String robotName) {
+    CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+    CriteriaQuery<Robot> criteriaQuery = criteriaBuilder.createQuery(Robot.class);
+    Root<Robot> root = criteriaQuery.from(Robot.class);
+
+    Expression<Boolean> predicate = criteriaBuilder.equal(root.get("robotName"), robotName);
+    criteriaQuery.select(root).where(predicate);
+
+    return em.createQuery(criteriaQuery).getResultList();
+
   }
 }

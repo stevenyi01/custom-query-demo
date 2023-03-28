@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface CustomQueryRepository {
 
-  List<RobotPool> findRobotMembersForRobot(Robot robot);
+  List<RobotPool> findRobotMembersForRobot(String robotName);
 }
